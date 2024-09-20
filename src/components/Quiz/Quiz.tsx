@@ -36,30 +36,30 @@ const QuizComponent: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const result = calculateCaliberFromAnswers(answers);
-    setCaliberResult(result);  // Set the calculated caliber result
-    setShowModal(true);        // Show the modal
+    setCaliberResult(result);
+    setShowModal(true);
   };
 
-    // Handle resetting the quiz
     const handleReset = () => {
-      setAnswers({});            // Clear all answers
-      setShowModal(false);        // Hide the modal if it's open
-      setCaliberResult(null);       // Clear the result
+      setAnswers({});
+      setShowModal(false);
+      setCaliberResult(null);
     };
 
   const handleClose = () => {
-    setShowModal(false);       // Hide the modal
+    setShowModal(false);
   };
 
   const allQuestionsAnswered = Object.keys(answers).length === quizQuestions.length;
 
   return (
     <Container className="mt-4">
-      <h1>Caliber Quiz</h1>
+      <h1>Caliber of a Man Quiz</h1>
+      <br />
       <Form onSubmit={handleSubmit}>
         {quizQuestions.map((question, questionIndex) => (
           <Form.Group key={questionIndex} className="mb-4">
-            <Form.Label>{question.question}</Form.Label>
+            <Form.Label><h5>{question.question}</h5></Form.Label>
             {question.answers.map((answer, answerIndex) => (
               <Form.Check
                 key={answerIndex}
@@ -83,41 +83,39 @@ const QuizComponent: React.FC = () => {
         </Button>
       </Form>
 
-    {/* Modal to display the final score */}
-    <Modal show={showModal} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Your Caliber Result</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {caliberResult && (
-            <>
-              <h4>Average Caliber: {caliberResult.averageCaliber}</h4>
-              <hr />
-              <h5>Individual Results:</h5>
-              <ul>
-                {quizQuestions.map((question, index) => (
-                  <li key={index}>
-                    <strong>{question.category}:</strong> {caliberResult.individualCalibers[index]}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Display the description of the average caliber */}
-              <h5>Description for {caliberResult.averageCaliber}:</h5>
-              <ul>
-                {CALIBER_DESCRIPTIONS[caliberResult.averageCaliber]?.map((description, index) => (
-                  <li key={index}>{description}</li>
-                ))}
-              </ul>
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    {caliberResult && (
+      <Modal show={showModal} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>{CALIBER_DESCRIPTIONS[caliberResult.averageCaliber]?.type}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {caliberResult && (
+          <>
+            <ul>
+              {CALIBER_DESCRIPTIONS[caliberResult.averageCaliber]?.description.map((description, index) => (
+                <li key={index}>{description}</li>
+              ))}
+            </ul>
+            <hr />
+            <h5>Individual Results:</h5>
+            <ul>
+              {quizQuestions.map((question, index) => (
+                <li key={index}>
+                  <strong>{question.category}:</strong> {caliberResult.individualCalibers[index]}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+    )}
+      <br />
     </Container>
   );
 };
