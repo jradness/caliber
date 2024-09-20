@@ -17,7 +17,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Caliber Of Men",
-  description: "Guage what kind of Caliber of Man you are",
+  description: "Guage what Caliber of Man you are",
 };
 
 export default function RootLayout({
